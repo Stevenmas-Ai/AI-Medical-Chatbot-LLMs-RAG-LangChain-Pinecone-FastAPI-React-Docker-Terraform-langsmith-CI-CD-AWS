@@ -41,7 +41,7 @@ docsearch = PineconeVectorStore.from_existing_index(
     embedding=embedding
 )
 
-TOP_N = int(os.getenv("TOP_N", "5"))          # chunks sent to the LLM (recall lever)
+TOP_N = int(os.getenv("TOP_N", "3"))          # chunks sent to the LLM (recall lever)
 CANDIDATE_K = int(os.getenv("CANDIDATE_K", "20"))  # wide pool the reranker scores
 if USE_RERANKER:
     # Retrieve a WIDE candidate set, then cross-encoder reranks to TOP_N.

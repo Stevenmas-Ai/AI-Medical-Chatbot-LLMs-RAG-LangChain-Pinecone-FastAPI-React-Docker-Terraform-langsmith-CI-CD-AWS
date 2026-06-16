@@ -45,7 +45,7 @@ from src.reranker import build_reranking_retriever
 DATASET_PATH = Path(__file__).parent / "eval_dataset.json"
 DATASET_NAME = os.getenv("LANGSMITH_DATASET", "medical-chatbot-qa")
 USE_RERANKER = os.getenv("USE_RERANKER", "true").lower() == "true"
-TOP_N = int(os.getenv("TOP_N", "5"))
+TOP_N = int(os.getenv("TOP_N", "3"))
 CANDIDATE_K = int(os.getenv("CANDIDATE_K", "20"))
 
 client = Client()
