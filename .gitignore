@@ -20,9 +20,11 @@ __pycache__/
 *.py[cod]
 *$py.class
 .env
+.env.*
 .venv
 env/
 venv/
+medicalbot/
 dist/
 *.egg-info/
 

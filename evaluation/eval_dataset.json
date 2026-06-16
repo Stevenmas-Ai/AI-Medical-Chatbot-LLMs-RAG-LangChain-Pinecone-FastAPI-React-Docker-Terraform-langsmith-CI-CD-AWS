@@ -1,0 +1,34 @@
+[
+  {
+    "question": "What are the common symptoms of asthma?",
+    "ground_truth": "Common symptoms of asthma include shortness of breath, wheezing, chest tightness, and coughing, often worse at night or early morning."
+  },
+  {
+    "question": "What causes type 2 diabetes?",
+    "ground_truth": "Type 2 diabetes is caused by the body becoming resistant to insulin or not producing enough insulin, often linked to obesity, inactivity, and genetics."
+  },
+  {
+    "question": "How is high blood pressure treated?",
+    "ground_truth": "High blood pressure is treated with lifestyle changes such as diet, exercise, reduced salt intake, and medications like diuretics, ACE inhibitors, or beta blockers."
+  },
+  {
+    "question": "What is the function of red blood cells?",
+    "ground_truth": "Red blood cells carry oxygen from the lungs to the body's tissues and return carbon dioxide to the lungs to be exhaled."
+  },
+  {
+    "question": "What are the warning signs of a stroke?",
+    "ground_truth": "Warning signs of a stroke include sudden numbness or weakness of the face, arm, or leg (especially on one side), confusion, trouble speaking, vision problems, dizziness, and severe headache."
+  },
+  {
+    "question": "What is anemia and what causes it?",
+    "ground_truth": "Anemia is a condition with too few healthy red blood cells or hemoglobin, commonly caused by iron deficiency, vitamin deficiencies, chronic disease, or blood loss."
+  },
+  {
+    "question": "How does the immune system respond to infection?",
+    "ground_truth": "The immune system responds to infection by activating white blood cells and producing antibodies to identify and destroy pathogens, often causing inflammation and fever."
+  },
+  {
+    "question": "What are common side effects of antibiotics?",
+    "ground_truth": "Common side effects of antibiotics include nausea, diarrhea, stomach upset, and allergic reactions, and overuse can lead to antibiotic resistance."
+  }
+]

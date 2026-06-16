@@ -13,5 +13,11 @@ python-dotenv==1.1.0
 pinecone
 transformers==4.44.0
 numpy<2
+# --- evaluation & observability (LangSmith) ---
+langsmith
+pandas
+# Optional hosted tracing (uncomment if used):
+# langfuse
+# langchain-cohere   # only if using the hosted Cohere reranker
 --extra-index-url https://download.pytorch.org/whl/cpu
 torch==2.2.0+cpu
