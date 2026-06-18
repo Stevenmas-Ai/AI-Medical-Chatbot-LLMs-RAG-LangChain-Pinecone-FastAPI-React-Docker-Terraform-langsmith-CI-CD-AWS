@@ -1,4 +1,3 @@
-```markdown
 # 🏥 End-to-End-AI-Medical-Chatbot-with-LLMs-RAG-LangChain-Pinecone-FastAPI-React-Docker-Terraform-GitHub-CI-CD-AWS
 
 ## 📋 Overview
@@ -30,26 +29,26 @@ A production-ready RAG-based medical chatbot that answers medical questions usin
 
 **Clone the repository**
 
-```
+```bash
 git clone https://github.com/Stevenmas-Ai/AI-Medical-Chatbot-with-LLMs-RAG-LangChain-Pinecone-FastAPI-React-Docker-Terraform-GitHub-CI-CD-AWS.git
 ```
 
 **STEP 01 - Create a conda environment**
 
-```
+```bash
 conda create -n medicalbot python=3.11 -y
 conda activate medicalbot
 ```
 
 **STEP 02 - Install the requirements**
 
-```
+```bash
 pip install -r requirements.txt
 ```
 
 **STEP 03 - Create a `.env` file in the root directory**
 
-```
+```env
 PINECONE_API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 OPENAI_API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 GROQ_API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
@@ -59,19 +58,19 @@ COHERE_API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
 **STEP 04 - Store embeddings to Pinecone**
 
-```
+```bash
 python store_index.py
 ```
 
 **STEP 05 - Run the backend**
 
-```
+```bash
 python -m uvicorn app:app --reload --port 8000
 ```
 
 **STEP 06 - Run the frontend**
 
-```
+```bash
 cd frontend
 npm install
 npm start
@@ -79,7 +78,7 @@ npm start
 
 **STEP 07 - (Optional) Run the LangSmith evaluation**
 
-```
+```bash
 python -m evaluation.langsmith_eval
 ```
 
@@ -109,8 +108,8 @@ On the evaluation set, the reranked pipeline passed **all four metrics at 100%**
 
 Run the evaluation:
 
-```
-python -m evaluation.langsmith_eval                 # with reranker
+```bash
+python -m evaluation.langsmith_eval                      # with reranker
 USE_RERANKER=false python -m evaluation.langsmith_eval   # baseline comparison
 ```
 
@@ -136,19 +135,19 @@ https://developer.hashicorp.com/terraform/downloads
 
 **Configure AWS CLI:**
 
-```
+```bash
 aws configure
 ```
 
 ### 3. Generate SSH Key
 
-```
+```bash
 ssh-keygen -t rsa -b 4096 -f ~/.ssh/medicalbot
 ```
 
 ### 4. Deploy Infrastructure with Terraform
 
-```
+```bash
 cd terraform
 terraform init
 terraform plan
@@ -174,7 +173,7 @@ ecr_repository_url = "xxxxxxxxxxxx.dkr.ecr.us-east-1.amazonaws.com/medical-chatb
 
 ### 5. Connect to EC2 and Install Docker
 
-```
+```bash
 sudo apt-get update -y
 sudo apt-get upgrade -y
 curl -fsSL https://get.docker.com -o get-docker.sh
@@ -198,7 +197,7 @@ When prompted:
 
 Then start the runner:
 
-```
+```bash
 ./run.sh
 ```
 
@@ -218,7 +217,7 @@ Go to: **Settings → Secrets and variables → Actions → New repository secre
 
 ### 8. Push Code to Trigger CI/CD
 
-```
+```bash
 git add .
 git commit -m "Deploy"
 git push origin main
@@ -324,7 +323,7 @@ http://YOUR_EC2_IP:8000
 ## 🗑️ Cleanup AWS Resources
 To avoid charges, destroy resources when done:
 
-```
+```bash
 cd terraform
 terraform destroy
 ```
@@ -333,9 +332,8 @@ terraform destroy
 
 ## 👨‍💻 Author
 **Steven Gerard Mascarenhas**
-- LinkedIn: [https://www.linkedin.com/in/steven-mas/]
+- LinkedIn: [https://www.linkedin.com/in/steven-mas/](https://www.linkedin.com/in/steven-mas/)
 - GitHub: [StevenGerardMascarenhas](https://github.com/StevenGerardMascarenhas)
 
 ## 📄 License
 This project is licensed under the Apache License - see the LICENSE file for details.
-```
