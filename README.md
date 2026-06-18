@@ -14,7 +14,7 @@ A production-ready RAG-based medical chatbot that answers medical questions usin
 - **Orchestration:** LangChain
 - **Vector Database:** Pinecone
 - **Embeddings:** HuggingFace sentence-transformers
-- **Reranking:** Cross-Encoder (ms-marco-MiniLM-L-6-v2)
+- **Reranking:** Cohere Rerank (rerank-v3.5)
 - **Evaluation & Observability:** LangSmith
 - **Container:** Docker
 - **Infrastructure:** Terraform
