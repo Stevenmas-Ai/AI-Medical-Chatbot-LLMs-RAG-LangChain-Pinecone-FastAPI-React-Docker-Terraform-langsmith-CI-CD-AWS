@@ -102,7 +102,8 @@ The pipeline is evaluated and monitored with **LangSmith**.
 
 On the evaluation set, the reranked pipeline passed **all four metrics at 100%**.
 
-![LangSmith evaluation results](langsmith_eval.png)
+<img width="547" height="288" alt="image" src="https://github.com/user-attachments/assets/c7b7c01d-be33-42f0-b9a2-efaa3d0d25e4" />
+
 
 **Observability:** every request is traced in LangSmith, capturing retrieval latency, generation latency, token usage, and cost per query.
 
