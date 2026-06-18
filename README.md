@@ -1,8 +1,8 @@
-
+```markdown
 # 🏥 End-to-End-AI-Medical-Chatbot-with-LLMs-RAG-LangChain-Pinecone-FastAPI-React-Docker-Terraform-GitHub-CI-CD-AWS
 
 ## 📋 Overview
-A production-ready RAG-based medical chatbot that answers medical questions using the Gale Encyclopedia of Medicine (637 pages). Users can switch between Groq (LLaMA 3.1) and OpenAI GPT-4o as the LLM provider.
+A production-ready RAG-based medical chatbot that answers medical questions using the Gale Encyclopedia of Medicine (637 pages). Retrieval uses a two-stage pipeline: Pinecone vector search retrieves candidate passages, then a cross-encoder reranker selects the most relevant ones before answer generation. Answer quality is evaluated and the pipeline is traced with LangSmith. Users can switch between Groq (LLaMA 3.1) and OpenAI GPT-4o as the LLM provider.
 
 ![alt text](linkedinpost.png)
 ![medical_chatbot_architecture_final (1)](https://github.com/user-attachments/assets/78e19135-31ac-43f8-892d-4e73e9d2d762)
@@ -15,6 +15,8 @@ A production-ready RAG-based medical chatbot that answers medical questions usin
 - **Orchestration:** LangChain
 - **Vector Database:** Pinecone
 - **Embeddings:** HuggingFace sentence-transformers
+- **Reranking:** Cross-Encoder (ms-marco-MiniLM-L-6-v2)
+- **Evaluation & Observability:** LangSmith
 - **Container:** Docker
 - **Infrastructure:** Terraform
 - **Cloud:** AWS EC2 + ECR
@@ -27,48 +29,89 @@ A production-ready RAG-based medical chatbot that answers medical questions usin
 ### STEPS:
 
 **Clone the repository**
+
 ```
-git clone https://github.com/Stevenmas-Ai/End-to-End-AI-Medical-Chatbot-with-LLMs-LangChain-Pinecone-Flask-AWS-.git
+git clone https://github.com/Stevenmas-Ai/AI-Medical-Chatbot-with-LLMs-RAG-LangChain-Pinecone-FastAPI-React-Docker-Terraform-GitHub-CI-CD-AWS.git
 ```
 
 **STEP 01 - Create a conda environment**
+
 ```
 conda create -n medicalbot python=3.11 -y
 conda activate medicalbot
 ```
 
 **STEP 02 - Install the requirements**
+
 ```
 pip install -r requirements.txt
 ```
 
 **STEP 03 - Create a `.env` file in the root directory**
+
 ```
 PINECONE_API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 OPENAI_API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 GROQ_API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+LANGSMITH_API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+COHERE_API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 ```
 
 **STEP 04 - Store embeddings to Pinecone**
+
 ```
 python store_index.py
 ```
 
 **STEP 05 - Run the backend**
+
 ```
 python -m uvicorn app:app --reload --port 8000
 ```
 
 **STEP 06 - Run the frontend**
+
 ```
 cd frontend
 npm install
 npm start
 ```
 
+**STEP 07 - (Optional) Run the LangSmith evaluation**
+
+```
+python -m evaluation.langsmith_eval
+```
+
 Now open:
+
 ```
 http://localhost:3000
+```
+
+---
+
+## 📊 Evaluation & Observability
+
+The pipeline is evaluated and monitored with **LangSmith**.
+
+**Evaluation** uses four LLM-as-judge metrics:
+- **Correctness** — is the answer factually correct vs. the reference?
+- **Groundedness** — is the answer supported by the retrieved context (no hallucination)?
+- **Relevance** — does the answer address the question?
+- **Retrieval Relevance** — are the retrieved chunks relevant to the question?
+
+On the evaluation set, the reranked pipeline passed **all four metrics at 100%**.
+
+![LangSmith evaluation results](langsmith_eval.png)
+
+**Observability:** every request is traced in LangSmith, capturing retrieval latency, generation latency, token usage, and cost per query.
+
+Run the evaluation:
+
+```
+python -m evaluation.langsmith_eval                 # with reranker
+USE_RERANKER=false python -m evaluation.langsmith_eval   # baseline comparison
 ```
 
 ---
@@ -80,26 +123,31 @@ http://localhost:3000
 ### 2. Install Required Tools
 
 **AWS CLI:**
+
 ```
 https://awscli.amazonaws.com/AWSCLIV2.msi
 ```
 
 **Terraform:**
+
 ```
 https://developer.hashicorp.com/terraform/downloads
 ```
 
 **Configure AWS CLI:**
+
 ```
 aws configure
 ```
 
 ### 3. Generate SSH Key
+
 ```
 ssh-keygen -t rsa -b 4096 -f ~/.ssh/medicalbot
 ```
 
 ### 4. Deploy Infrastructure with Terraform
+
 ```
 cd terraform
 terraform init
@@ -108,6 +156,7 @@ terraform apply
 ```
 
 Terraform will automatically create:
+
 ```
 1. IAM user with EC2 and ECR permissions
 2. EC2 instance (Ubuntu, t2.large, 30GB storage)
@@ -117,12 +166,14 @@ Terraform will automatically create:
 ```
 
 Save the outputs:
+
 ```
 ec2_public_ip = "x.x.x.x"
 ecr_repository_url = "xxxxxxxxxxxx.dkr.ecr.us-east-1.amazonaws.com/medical-chatbot"
 ```
 
 ### 5. Connect to EC2 and Install Docker
+
 ```
 sudo apt-get update -y
 sudo apt-get upgrade -y
@@ -134,9 +185,11 @@ docker --version
 ```
 
 ### 6. Configure EC2 as Self-Hosted Runner
+
 ```
 settings > actions > runners > new self hosted runner > choose Linux > run commands one by one
 ```
+
 When prompted:
 - Runner group: press Enter
 - Runner name: self-hosted
@@ -144,6 +197,7 @@ When prompted:
 - Work folder: press Enter
 
 Then start the runner:
+
 ```
 ./run.sh
 ```
@@ -160,8 +214,10 @@ Go to: **Settings → Secrets and variables → Actions → New repository secre
 | `PINECONE_API_KEY` | Your Pinecone key |
 | `OPENAI_API_KEY` | Your OpenAI key |
 | `GROQ_API_KEY` | Your Groq key |
+| `LANGSMITH_API_KEY` | Your LangSmith key (for tracing in prod) |
 
 ### 8. Push Code to Trigger CI/CD
+
 ```
 git add .
 git commit -m "Deploy"
@@ -169,6 +225,7 @@ git push origin main
 ```
 
 ### 9. CI/CD Pipeline Flow
+
 ```
 Push code to GitHub
         ↓
@@ -188,6 +245,7 @@ App live at EC2_IP:8000
 ```
 
 ### 10. Access the App
+
 ```
 http://YOUR_EC2_IP:8000
 ```
@@ -195,6 +253,7 @@ http://YOUR_EC2_IP:8000
 ---
 
 ## 📁 Project Structure
+
 ```
 ├── .github/
 │   └── workflows/
@@ -208,7 +267,16 @@ http://YOUR_EC2_IP:8000
 ├── src/
 │   ├── __init__.py
 │   ├── helper.py              # PDF loading, chunking, embeddings
-│   └── prompt.py              # LLM prompt template
+│   ├── prompt.py              # LLM prompt template
+│   ├── reranker.py            # Cross-encoder reranker
+│   └── monitoring.py          # Metrics, tracing, feedback
+├── evaluation/
+│   ├── langsmith_eval.py      # LangSmith LLM-as-judge evaluation
+│   ├── eval_dataset.json      # Medical QA evaluation set
+│   ├── eval_retrieval.py      # Retrieval/reranker check (no LLM)
+│   └── demo_reranker.py       # Offline reranker demo
+├── docs/
+│   └── RERANKING_EVAL_MONITORING.md   # Reranking, eval & monitoring docs
 ├── terraform/
 │   ├── main.tf                # AWS infrastructure
 │   ├── variables.tf           # Terraform variables
@@ -234,6 +302,7 @@ http://YOUR_EC2_IP:8000
 | POST | `/chat` | Send message to chatbot |
 
 ### Chat Request
+
 ```json
 {
   "message": "What is acne?",
@@ -242,6 +311,7 @@ http://YOUR_EC2_IP:8000
 ```
 
 ### Chat Response
+
 ```json
 {
   "answer": "Acne is a common skin disease...",
@@ -253,6 +323,7 @@ http://YOUR_EC2_IP:8000
 
 ## 🗑️ Cleanup AWS Resources
 To avoid charges, destroy resources when done:
+
 ```
 cd terraform
 terraform destroy
@@ -267,3 +338,4 @@ terraform destroy
 
 ## 📄 License
 This project is licensed under the Apache License - see the LICENSE file for details.
+```
