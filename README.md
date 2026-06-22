@@ -330,7 +330,8 @@ terraform destroy
 ```
 
 ---
-
+Presentation:
+https://github.com/Stevenmas-Ai/AI-Medical-Chatbot-LLMs-RAG-LangChain-Pinecone-FastAPI-React-Docker-Terraform-langsmith-CI-CD-AWS/blob/main/AI-Medical-Chatbot-Technical-Presentation-1.pptx
 
 
 ## 👨‍💻 Author
